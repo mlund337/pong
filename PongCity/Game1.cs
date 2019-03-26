@@ -12,6 +12,9 @@ namespace PongCity
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        private Paddle paddle;
+        private Ball ball;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -44,6 +47,9 @@ namespace PongCity
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, new Rectangle(0,0, Window.ClientBounds.Width, Window.ClientBounds.Height));
+            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero);
+            ball.AttachTo(paddle);
 
             // TODO: use this.Content to load your game content here
         }
@@ -68,6 +74,8 @@ namespace PongCity
                 Exit();
 
             // TODO: Add your update logic here
+            paddle.Update(gameTime);
+            ball.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -81,6 +89,10 @@ namespace PongCity
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            paddle.Draw(spriteBatch);
+            ball.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
