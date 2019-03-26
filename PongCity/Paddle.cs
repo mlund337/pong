@@ -17,9 +17,9 @@ namespace PongCity
         {
             //Move paddle up
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                Velocity = new Vector2(0, -.5f);
+                Velocity = new Vector2(0, -5f);
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                Velocity = new Vector2(0, .5f);
+                Velocity = new Vector2(0, 5f);
             base.Update(gameTime);
         }
         protected override void CheckBounds()

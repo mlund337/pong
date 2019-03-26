@@ -19,7 +19,7 @@ namespace PongCity
         {
             if(Keyboard.GetState().IsKeyDown(Keys.Space) && attachedToPaddle != null)
             {
-                var newVelocity = new Vector2(0.5f, attachedToPaddle.Velocity.Y);
+                var newVelocity = new Vector2(5f, attachedToPaddle.Velocity.Y);
                 Velocity = newVelocity;
                 attachedToPaddle = null;
             }
