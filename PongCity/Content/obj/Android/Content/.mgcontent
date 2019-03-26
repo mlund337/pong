@@ -4,8 +4,8 @@
   <Platform>Android</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/ball.png</File>
-    <File>C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/Bat.png</File>
+    <File>C:/Users/Adala/Documents/GitHub/pong/PongCity/Content/ball.png</File>
+    <File>C:/Users/Adala/Documents/GitHub/pong/PongCity/Content/Bat.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />
