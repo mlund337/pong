@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Adala/Documents/GitHub/pong/PongCity/Content/Bat.png</SourceFile>
-  <SourceTime>2019-03-26T12:51:50.1543788-06:00</SourceTime>
-  <DestFile>C:/Users/Adala/Documents/GitHub/pong/PongCity/Content/bin/Android/Content/Bat.xnb</DestFile>
-  <DestTime>2019-03-26T12:53:28.6233309-06:00</DestTime>
+  <SourceFile>C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/Bat.png</SourceFile>
+  <SourceTime>2019-03-21T12:30:51.6522713-06:00</SourceTime>
+  <DestFile>C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/bin/Android/Content/Bat.xnb</DestFile>
+  <DestTime>2019-03-29T21:25:56.2425954-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T09:35:54-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

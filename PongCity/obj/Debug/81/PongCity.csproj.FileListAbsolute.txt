@@ -172,5 +172,5 @@ C:\Users\Adala\Documents\GitHub\pong\PongCity\obj\Debug\81\android\assets\System
 C:\Users\Adala\Documents\GitHub\pong\PongCity\obj\Debug\81\android\assets\System.ServiceModel.Internals.pdb
 C:\Users\Adala\Documents\GitHub\pong\PongCity\obj\Debug\81\android\assets\System.Xml.Linq.pdb
 C:\Users\Adala\Documents\GitHub\pong\PongCity\obj\Debug\81\android\assets\System.Xml.pdb
-C:\Users\Adala\Documents\GitHub\pong\PongCity\bin\Android\AnyCPU\Debug\PongCity.dll
-C:\Users\Adala\Documents\GitHub\pong\PongCity\obj\Debug\81\linksrc\PongCity.dll.mdb
+C:\Users\erics\OneDrive\Documents\GitHub\pong\PongCity\bin\Android\AnyCPU\Debug\PongCity.dll
+C:\Users\erics\OneDrive\Documents\GitHub\pong\PongCity\obj\Debug\81\linksrc\PongCity.dll.mdb

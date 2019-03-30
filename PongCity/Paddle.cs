@@ -7,10 +7,10 @@ namespace PongCity
 {
     public class Paddle : Sprite
     {
-        private readonly Rectangle screenBounds;
-        public Paddle(Texture2D texture, Vector2 location, Rectangle screenBounds) : base(texture, location)
+        
+        public Paddle(Texture2D texture, Vector2 location, Rectangle screenBounds) : base(texture, location, screenBounds)
         {
-            this.screenBounds = screenBounds;
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -24,7 +24,7 @@ namespace PongCity
         }
         protected override void CheckBounds()
         {
-            Location.Y = MathHelper.Clamp(Location.Y, 0, screenBounds.Height - texture.Height);
+            Location.Y = MathHelper.Clamp(Location.Y, 0, gameBoundaries.Height - texture.Height);
         }
 
     }
@@ -33,6 +33,8 @@ namespace PongCity
     {
         protected readonly Texture2D texture;
         public Vector2 Location;
+        protected readonly Rectangle gameBoundaries;
+
         public int Width
         {
             get { return texture.Width; }
@@ -43,9 +45,10 @@ namespace PongCity
         }
         public Vector2 Velocity { get; protected set; }
 
-        public Sprite(Texture2D texture, Vector2 location)
+        public Sprite(Texture2D texture, Vector2 location, Rectangle gameBoundaries)
         {
             this.texture = texture;
+            this.gameBoundaries = gameBoundaries;
             this.Location = location;
             Velocity = Vector2.Zero;
             

@@ -7,13 +7,22 @@ namespace PongCity
     public class Ball : Sprite
     {
         private Paddle attachedToPaddle;
-        public Ball(Texture2D texture, Vector2 location) : base(texture, location)
+        public Ball(Texture2D texture, Vector2 location, Rectangle gameBoundaries) : base(texture, location, gameBoundaries)
         {
 
         }
         protected override void CheckBounds()
         {
-            
+            if(Location.Y >= (gameBoundaries.Height - texture.Height) || Location.Y <= 0)
+            {
+                var newVelocity = new Vector2(Velocity.X, -Velocity.Y);
+                Velocity = newVelocity;
+            }
+            if (Location.X >= (gameBoundaries.Width - texture.Width) || Location.X <= 0)
+            {
+                var newVelocity = new Vector2(-Velocity.X, Velocity.Y);
+                Velocity = newVelocity;
+            }
         }
         public override void Update(GameTime gameTime)
         {

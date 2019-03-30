@@ -47,8 +47,10 @@ namespace PongCity
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, new Rectangle(0,0, Window.ClientBounds.Width, Window.ClientBounds.Height));
-            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero);
+
+            var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, gameBoundaries);
+            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero, gameBoundaries);
             ball.AttachTo(paddle);
 
             // TODO: use this.Content to load your game content here
