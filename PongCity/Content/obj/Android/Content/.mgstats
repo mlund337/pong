@@ -1,3 +1,0 @@
-Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/ball.png","C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/bin/Android/Content/ball.xnb","TextureProcessor","Texture2DContent",8368,16469,9.183652
-"C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/Bat.png","C:/Users/erics/OneDrive/Documents/GitHub/pong/PongCity/Content/bin/Android/Content/Bat.xnb","TextureProcessor","Texture2DContent",160,6485,0.1842738
