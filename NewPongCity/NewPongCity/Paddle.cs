@@ -7,24 +7,26 @@ namespace NewPongCity
 {
     public class Paddle : Sprite
     {
-        
-        public Paddle(Texture2D texture, Vector2 location, Rectangle screenBounds) : base(texture, location, screenBounds)
+        private readonly Rectangle screenBounds;
+        public Paddle(Texture2D texture, Vector2 location, Rectangle screenBounds) : base(texture, location, gameObjects)
         {
-            
+            this.screenBounds = screenBounds;
         }
 
-        public override void Update(GameTime gameTime)
+        public static GameObjects gameObjects { get; }
+
+        public override void Update(GameTime gameTime, GameObjects gameObjects)
         {
             //Move paddle up
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) || gameObjects.TouchInput.Up )
                 Velocity = new Vector2(0, -5f);
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            if (Keyboard.GetState().IsKeyDown(Keys.Right) || gameObjects.TouchInput.Down)
                 Velocity = new Vector2(0, 5f);
-            base.Update(gameTime);
+            base.Update(gameTime, gameObjects);
         }
         protected override void CheckBounds()
         {
-            Location.Y = MathHelper.Clamp(Location.Y, 0, gameBoundaries.Height - texture.Height);
+            Location.Y = MathHelper.Clamp(Location.Y, 0, screenBounds.Height - texture.Height);
         }
 
     }
@@ -33,8 +35,6 @@ namespace NewPongCity
     {
         protected readonly Texture2D texture;
         public Vector2 Location;
-        protected readonly Rectangle gameBoundaries;
-
         public int Width
         {
             get { return texture.Width; }
@@ -45,10 +45,9 @@ namespace NewPongCity
         }
         public Vector2 Velocity { get; protected set; }
 
-        public Sprite(Texture2D texture, Vector2 location, Rectangle gameBoundaries)
+        public Sprite(Texture2D texture, Vector2 location, GameObjects gameObjects)
         {
             this.texture = texture;
-            this.gameBoundaries = gameBoundaries;
             this.Location = location;
             Velocity = Vector2.Zero;
             
@@ -58,7 +57,7 @@ namespace NewPongCity
             spriteBatch.Draw(texture, Location, Color.White);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, GameObjects gameObjects)
         {
             Location += Velocity;
 

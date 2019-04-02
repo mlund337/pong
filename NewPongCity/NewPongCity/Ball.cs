@@ -7,26 +7,19 @@ namespace NewPongCity
     public class Ball : Sprite
     {
         private Paddle attachedToPaddle;
-        public Ball(Texture2D texture, Vector2 location, Rectangle gameBoundaries) : base(texture, location, gameBoundaries)
+        private static GameObjects gameObjects;
+
+        public Ball(Texture2D texture, Vector2 location) : base(texture, location, gameObjects)
         {
 
         }
         protected override void CheckBounds()
         {
-            if(Location.Y >= (gameBoundaries.Height - texture.Height) || Location.Y <= 0)
-            {
-                var newVelocity = new Vector2(Velocity.X, -Velocity.Y);
-                Velocity = newVelocity;
-            }
-            if (Location.X >= (gameBoundaries.Width - texture.Width) || Location.X <= 0)
-            {
-                var newVelocity = new Vector2(-Velocity.X, Velocity.Y);
-                Velocity = newVelocity;
-            }
+            
         }
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, GameObjects gameObjects)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Space) && attachedToPaddle != null)
+            if((Keyboard.GetState().IsKeyDown(Keys.Space) || gameObjects.TouchInput.Tapped) && attachedToPaddle != null)
             {
                 var newVelocity = new Vector2(5f, attachedToPaddle.Velocity.Y);
                 Velocity = newVelocity;
@@ -38,7 +31,7 @@ namespace NewPongCity
                 Location.Y = attachedToPaddle.Location.Y;
             }
             
-            base.Update(gameTime);
+            base.Update(gameTime, gameObjects);
         }
 
         public void AttachTo(Paddle paddle)

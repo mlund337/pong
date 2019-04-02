@@ -1,6 +1,8 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace NewPongCity
 {
@@ -14,6 +16,7 @@ namespace NewPongCity
 
         private Paddle paddle;
         private Ball ball;
+        private GameObjects gameObjects;
 
         public Game1()
         {
@@ -34,8 +37,7 @@ namespace NewPongCity
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            TouchPanel.EnabledGestures = GestureType.VerticalDrag | GestureType.Flick | GestureType.Tap;
             base.Initialize();
         }
 
@@ -47,11 +49,11 @@ namespace NewPongCity
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
-            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, gameBoundaries);
-            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero, gameBoundaries);
+            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, new Rectangle(0,0, Window.ClientBounds.Width, Window.ClientBounds.Height));
+            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero);
             ball.AttachTo(paddle);
+
+            gameObjects = new GameObjects { Paddle = paddle, Ball = ball };
 
             // TODO: use this.Content to load your game content here
         }
@@ -75,11 +77,30 @@ namespace NewPongCity
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 Exit();
 
+            gameObjects.TouchInput = new TouchInput();
+            GetTouchInput();
+
             // TODO: Add your update logic here
-            paddle.Update(gameTime);
-            ball.Update(gameTime);
+            paddle.Update(gameTime, gameObjects);
+            ball.Update(gameTime, gameObjects);
 
             base.Update(gameTime);
+        }
+
+        private void GetTouchInput()
+        {
+            while(TouchPanel.IsGestureAvailable)
+            {
+                var gesture = TouchPanel.ReadGesture();
+                if (gesture.Delta.Y > 0)
+                    gameObjects.TouchInput.Down = true;
+
+                if (gesture.Delta.Y < 0)
+                    gameObjects.TouchInput.Up = true;
+
+                if (gesture.GestureType == GestureType.Tap)
+                    gameObjects.TouchInput.Tapped = true;
+            }
         }
 
         /// <summary>
