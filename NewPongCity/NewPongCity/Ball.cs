@@ -9,13 +9,22 @@ namespace NewPongCity
         private Paddle attachedToPaddle;
         private static GameObjects gameObjects;
 
-        public Ball(Texture2D texture, Vector2 location) : base(texture, location, gameObjects)
+        public Ball(Texture2D texture, Vector2 location, Rectangle GameBoundaries) : base(texture, location, GameBoundaries, gameObjects)
         {
 
         }
         protected override void CheckBounds()
         {
-            
+            if (Location.Y >= (gameBoundaries.Height - texture.Height) || Location.Y <= 0)
+            {
+                var newVelocity = new Vector2(Velocity.X, -Velocity.Y);
+                Velocity = newVelocity;
+            }
+            if (Location.X >= (gameBoundaries.Width - texture.Width) || Location.X <= 0)
+            {
+                var newVelocity = new Vector2(-Velocity.X, Velocity.Y);
+                Velocity = newVelocity;
+            }
         }
         public override void Update(GameTime gameTime, GameObjects gameObjects)
         {
