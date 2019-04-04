@@ -20,6 +20,7 @@ namespace NewPongCity
 
         public Paddle(Texture2D texture, Vector2 location, Rectangle screenBounds, PlayerTypes playerType) : base(texture, location, screenBounds, gameObjects)
         {
+            this.playerType = playerType;
             this.screenBounds = screenBounds;
         }
 
