@@ -14,7 +14,8 @@ namespace NewPongCity
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        
+        Texture2D background;
+        Rectangle gameBoundaries;
         private Paddle playerPaddle;
         private Paddle computerPaddle;
         private Ball ball;
@@ -51,17 +52,17 @@ namespace NewPongCity
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
             var paddleTexture = Content.Load<Texture2D>("Bat");
 
-
+            background = Content.Load<Texture2D>("Background");
             playerPaddle = new Paddle(paddleTexture, Vector2.Zero, gameBoundaries, PlayerTypes.Human);
 
             var computerPaddleLocation = new Vector2(gameBoundaries.Width - paddleTexture.Width, 0);
 
             computerPaddle = new Paddle(paddleTexture, computerPaddleLocation, gameBoundaries, PlayerTypes.Computer);
 
-            ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero, gameBoundaries);
+            ball = new Ball(Content.Load<Texture2D>("ballWhite"), Vector2.Zero, gameBoundaries);
             ball.AttachTo(playerPaddle);
 
             gameObjects = new GameObjects { PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle, Ball = ball };
@@ -126,6 +127,7 @@ namespace NewPongCity
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            spriteBatch.Draw(background, gameBoundaries, Color.White);
             playerPaddle.Draw(spriteBatch);
             computerPaddle.Draw(spriteBatch);
             ball.Draw(spriteBatch);
