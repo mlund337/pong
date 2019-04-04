@@ -14,7 +14,9 @@ namespace NewPongCity
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private Paddle paddle;
+        
+        private Paddle playerPaddle;
+        private Paddle computerPaddle;
         private Ball ball;
         private GameObjects gameObjects;
 
@@ -50,12 +52,20 @@ namespace NewPongCity
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            var paddleTexture = Content.Load<Texture2D>("Bat");
 
-            paddle = new Paddle(Content.Load<Texture2D>("Bat"), Vector2.Zero, gameBoundaries);
+
+            playerPaddle = new Paddle(paddleTexture, Vector2.Zero, gameBoundaries, PlayerTypes.Human);
+
+            var computerPaddleLocation = new Vector2(gameBoundaries.Width - paddleTexture.Width, 0);
+
+            computerPaddle = new Paddle(paddleTexture, computerPaddleLocation, gameBoundaries, PlayerTypes.Computer);
+
             ball = new Ball(Content.Load<Texture2D>("ball"), Vector2.Zero, gameBoundaries);
-            ball.AttachTo(paddle);
+            ball.AttachTo(playerPaddle);
 
-            gameObjects = new GameObjects { Paddle = paddle, Ball = ball };
+            gameObjects = new GameObjects { PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle, Ball = ball };
+           
 
             // TODO: use this.Content to load your game content here
         }
@@ -83,7 +93,8 @@ namespace NewPongCity
             GetTouchInput();
 
             // TODO: Add your update logic here
-            paddle.Update(gameTime, gameObjects);
+            playerPaddle.Update(gameTime, gameObjects);
+            computerPaddle.Update(gameTime, gameObjects);
             ball.Update(gameTime, gameObjects);
 
             base.Update(gameTime);
@@ -115,7 +126,8 @@ namespace NewPongCity
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            paddle.Draw(spriteBatch);
+            playerPaddle.Draw(spriteBatch);
+            computerPaddle.Draw(spriteBatch);
             ball.Draw(spriteBatch);
             spriteBatch.End();
 

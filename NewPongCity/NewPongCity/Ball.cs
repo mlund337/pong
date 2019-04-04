@@ -30,7 +30,7 @@ namespace NewPongCity
         {
             if((Keyboard.GetState().IsKeyDown(Keys.Space) || gameObjects.TouchInput.Tapped) && attachedToPaddle != null)
             {
-                var newVelocity = new Vector2(5f, attachedToPaddle.Velocity.Y);
+                var newVelocity = new Vector2(5f, attachedToPaddle.Velocity.Y *.65f);
                 Velocity = newVelocity;
                 attachedToPaddle = null;
             }
