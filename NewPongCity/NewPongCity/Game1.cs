@@ -11,6 +11,8 @@ namespace NewPongCity
     /// </summary>
     public class Game1 : Game
     {
+        string[] ballColors = new string[] { "ball", "ballWhite", "ballGreen", "ballSmile" };
+        int ballSelector;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -50,6 +52,8 @@ namespace NewPongCity
         /// </summary>
         protected override void LoadContent()
         {
+            Random rnd = new Random();
+            ballSelector = rnd.Next(0, 4);
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
@@ -62,7 +66,7 @@ namespace NewPongCity
 
             computerPaddle = new Paddle(paddleTexture, computerPaddleLocation, gameBoundaries, PlayerTypes.Computer);
 
-            ball = new Ball(Content.Load<Texture2D>("ballWhite"), Vector2.Zero, gameBoundaries);
+            ball = new Ball(Content.Load<Texture2D>(ballColors[ballSelector]), Vector2.Zero, gameBoundaries);
             ball.AttachTo(playerPaddle);
 
             gameObjects = new GameObjects { PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle, Ball = ball };
