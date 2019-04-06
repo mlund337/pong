@@ -18,6 +18,15 @@ namespace NewPongCity
         {
             get { return texture.Height; }
         }
+
+        public Rectangle BoundingBox
+        {
+            get
+            {
+                return new Rectangle((int)Location.X, (int)Location.Y, Width, Height);
+            }
+        }
+
         public Vector2 Velocity { get; protected set; }
 
         public Sprite(Texture2D texture, Vector2 location, Rectangle gameBoundaries, GameObjects gameObjects)

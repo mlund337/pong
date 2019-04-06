@@ -39,6 +39,14 @@ namespace NewPongCity
                 Location.X = attachedToPaddle.Location.X + attachedToPaddle.Width;
                 Location.Y = attachedToPaddle.Location.Y;
             }
+            else
+            {
+                if(BoundingBox.Intersects(gameObjects.PlayerPaddle.BoundingBox) || BoundingBox.Intersects(gameObjects.ComputerPaddle.BoundingBox))
+                {
+                    Velocity = new Vector2(-Velocity.X, Velocity.Y);
+                }
+              
+            }
             
             base.Update(gameTime, gameObjects);
         }
