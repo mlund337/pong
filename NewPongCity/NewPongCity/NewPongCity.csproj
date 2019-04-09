@@ -61,6 +61,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Paddle.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
