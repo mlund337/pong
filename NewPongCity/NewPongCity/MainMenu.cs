@@ -21,10 +21,10 @@ namespace NewPongCity
         Texture2D options;
         Texture2D exit;
 
-        Rectangle topLeftOfSprite;
-        Rectangle topLeftOfSprite2;
-        Rectangle topLeftOfSprite3;
-        Rectangle topLeftOfSprite4;
+        Rectangle _oneplayer;
+        Rectangle _two_player;
+        Rectangle _options;
+        Rectangle _exit;
 
         public MainMenu()
         {
@@ -105,18 +105,18 @@ namespace NewPongCity
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             Color tintColor = Color.White;
-            Rectangle topLeftOfSprite1 = new Rectangle(700, 20, 1000, 700);
-            spriteBatch.Draw(logo, topLeftOfSprite1, tintColor);
+            Rectangle _logo = new Rectangle(700, 20, 1000, 700);
+            spriteBatch.Draw(logo,_logo, tintColor);
 
-            topLeftOfSprite = new Rectangle(1000, 700, 450, 100);
-            spriteBatch.Draw(one_player, topLeftOfSprite, tintColor);
+            _oneplayer = new Rectangle(1000, 700, 450, 100);
+            spriteBatch.Draw(one_player, _oneplayer, tintColor);
 
-            topLeftOfSprite2 = new Rectangle(1000, 850, 450, 100);
-            spriteBatch.Draw(two_player, topLeftOfSprite2, tintColor);
-            topLeftOfSprite3 = new Rectangle(1000, 1000, 450, 100);
-            spriteBatch.Draw(options, topLeftOfSprite3, tintColor);
-           topLeftOfSprite4 = new Rectangle(1050, 1150, 350, 100);
-            spriteBatch.Draw(exit, topLeftOfSprite4, tintColor);
+            _two_player = new Rectangle(1000, 850, 450, 100);
+            spriteBatch.Draw(two_player, _two_player, tintColor);
+            _options = new Rectangle(1000, 1000, 450, 100);
+            spriteBatch.Draw(options, _options, tintColor);
+           _exit = new Rectangle(1050, 1150, 350, 100);
+            spriteBatch.Draw(exit, _exit, tintColor);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -128,20 +128,20 @@ namespace NewPongCity
             while (TouchPanel.IsGestureAvailable)
             {
                 var gesture = TouchPanel.ReadGesture();
-                if (gesture.GestureType == GestureType.Tap && topLeftOfSprite.Contains(gesture.Position))
+                if (gesture.GestureType == GestureType.Tap && _oneplayer.Contains(gesture.Position))
                 {
                     Console.WriteLine("ok");
 
                 }
-                else if(gesture.GestureType == GestureType.Tap && topLeftOfSprite2.Contains(gesture.Position))
+                else if(gesture.GestureType == GestureType.Tap && _two_player.Contains(gesture.Position))
                 {
 
                 }
-                else if (gesture.GestureType == GestureType.Tap && topLeftOfSprite3.Contains(gesture.Position))
+                else if (gesture.GestureType == GestureType.Tap && _options.Contains(gesture.Position))
                 {
 
                 }
-                else if (gesture.GestureType == GestureType.Tap && topLeftOfSprite4.Contains(gesture.Position))
+                else if (gesture.GestureType == GestureType.Tap && _exit.Contains(gesture.Position))
                 {
                     Exit();
                 }

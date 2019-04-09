@@ -48,7 +48,10 @@ namespace NewPongCity
 			public const int Icon = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int Splash = 2130837505;
+			public const int pong_city = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int Splash = 2130837506;
 			
 			static Drawable()
 			{
@@ -83,7 +86,7 @@ namespace NewPongCity
 		{
 			
 			// aapt resource value: 0x7f040000
-			public const int Theme_Splash = 2130968576;
+			public const int Theme_pong_city = 2130968576;
 			
 			static Style()
 			{

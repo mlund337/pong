@@ -7,8 +7,8 @@ namespace NewPongCity
 {
     [Activity(Label = "PongCity"
         , MainLauncher = true
-        , Icon = "@drawable/icon"
-        , Theme = "@style/Theme.Splash"
+        , Icon = "@drawable/pong_city"
+        , Theme = "@style/Theme.pong_city"
         , LaunchMode = Android.Content.PM.LaunchMode.SingleInstance
         , ScreenOrientation = ScreenOrientation.Landscape
         , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize | ConfigChanges.ScreenLayout)]
