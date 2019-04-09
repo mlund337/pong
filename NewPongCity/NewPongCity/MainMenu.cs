@@ -22,10 +22,9 @@ namespace NewPongCity
         Texture2D exit;
 
         Rectangle topLeftOfSprite;
-
-
-
-
+        Rectangle topLeftOfSprite2;
+        Rectangle topLeftOfSprite3;
+        Rectangle topLeftOfSprite4;
 
         public MainMenu()
         {
@@ -112,11 +111,11 @@ namespace NewPongCity
             topLeftOfSprite = new Rectangle(1000, 700, 450, 100);
             spriteBatch.Draw(one_player, topLeftOfSprite, tintColor);
 
-            Rectangle topLeftOfSprite2 = new Rectangle(1000, 850, 450, 100);
+            topLeftOfSprite2 = new Rectangle(1000, 850, 450, 100);
             spriteBatch.Draw(two_player, topLeftOfSprite2, tintColor);
-            Rectangle topLeftOfSprite3 = new Rectangle(1000, 1000, 450, 100);
+            topLeftOfSprite3 = new Rectangle(1000, 1000, 450, 100);
             spriteBatch.Draw(options, topLeftOfSprite3, tintColor);
-            Rectangle topLeftOfSprite4 = new Rectangle(1050, 1150, 350, 100);
+           topLeftOfSprite4 = new Rectangle(1050, 1150, 350, 100);
             spriteBatch.Draw(exit, topLeftOfSprite4, tintColor);
             spriteBatch.End();
 
@@ -133,6 +132,18 @@ namespace NewPongCity
                 {
                     Console.WriteLine("ok");
 
+                }
+                else if(gesture.GestureType == GestureType.Tap && topLeftOfSprite2.Contains(gesture.Position))
+                {
+
+                }
+                else if (gesture.GestureType == GestureType.Tap && topLeftOfSprite3.Contains(gesture.Position))
+                {
+
+                }
+                else if (gesture.GestureType == GestureType.Tap && topLeftOfSprite4.Contains(gesture.Position))
+                {
+                    Exit();
                 }
             }
         }
