@@ -71,6 +71,7 @@ namespace NewPongCity
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 480;
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+            graphics.ApplyChanges();
            
             //Multiplayer
             _messageQueue = new ConcurrentQueue<string>();
@@ -302,22 +303,46 @@ namespace NewPongCity
 
         void DrawMainMenu(GameTime gameTime)
         {
+            DisplayMode dm = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
             _state = GameState.menu;
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             Color tintColor = Color.White;
-            Rectangle _logo = new Rectangle(700, 20, 1000, 700);
+            Rectangle _logo = new Rectangle(
+                dm.Width / 3,
+                0,
+                dm.Width / 3,
+                (int)((dm.Width / 3) * 0.75));
             spriteBatch.Draw(logo, _logo, tintColor);
-            _oneplayer = new Rectangle(1000, 700, 450, 100);
+
+            _oneplayer = new Rectangle(
+                dm.Width / 3 + _logo.Width / 4,
+                _logo.Height,
+                _logo.Width / 2,
+                _logo.Width / 10);
             spriteBatch.Draw(one_player, _oneplayer, tintColor);
-            _two_player = new Rectangle(1000, 850, 450, 100);
+
+            _two_player = new Rectangle(
+                dm.Width / 3 + _logo.Width / 4,
+                _oneplayer.Location.Y + _oneplayer.Height + _oneplayer.Height / 2,
+                _logo.Width / 2,
+                _logo.Width / 10);
             spriteBatch.Draw(two_player, _two_player, tintColor);
-            _options = new Rectangle(1000, 1000, 450, 100);
+
+            _options = new Rectangle(
+                dm.Width / 3 + _logo.Width / 4,
+                _two_player.Location.Y + _two_player.Height + _two_player.Height / 2,
+                _logo.Width / 2,
+                _logo.Width / 10);
             spriteBatch.Draw(options, _options, tintColor);
-            _exit = new Rectangle(1050, 1150, 350, 100);
+
+            _exit = new Rectangle(
+                dm.Width / 3 + _logo.Width / 4 + _logo.Width / 10,
+                _options.Location.Y + _options.Height + _options.Height / 2,
+                _logo.Width/2 - _logo.Width/5,
+                _logo.Width / 10);
             spriteBatch.Draw(exit, _exit, tintColor);
             spriteBatch.End();
-
         }
 
         
