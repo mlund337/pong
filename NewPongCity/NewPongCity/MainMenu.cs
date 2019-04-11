@@ -13,8 +13,29 @@ namespace NewPongCity
     /// </summary>
     public class MainMenu: Game
     {
+        enum GameState
+        {
+            menu,
+            one_player,
+            two_player,
+            exit,
+        }
+
+        GameState _state;
+
+
+        string[] ballColors = new string[] { "ball", "ballWhite", "ballGreen", "ballSmile" };
+        int ballSelector;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Texture2D background;
+        Rectangle gameBoundaries;
+        private Paddle playerPaddle;
+        private Paddle computerPaddle;
+        private Ball ball;
+        private GameObjects gameObjects;
+        
         Texture2D logo;
         Texture2D one_player;
         Texture2D two_player;
@@ -25,6 +46,7 @@ namespace NewPongCity
         Rectangle _two_player;
         Rectangle _options;
         Rectangle _exit;
+       // private bool pushedStartGameButton = true;
 
         public MainMenu()
         {
@@ -66,8 +88,26 @@ namespace NewPongCity
             options = Content.Load<Texture2D>("button3");
             exit = Content.Load<Texture2D>("button4");
 
+            /////////////////////////////////////////////////////////////////////////
+            Random rnd = new Random();
+            ballSelector = rnd.Next(0, 4);
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            var paddleTexture = Content.Load<Texture2D>("Bat");
 
-            // TODO: use this.Content to load your game content here
+            background = Content.Load<Texture2D>("Background");
+            playerPaddle = new Paddle(paddleTexture, Vector2.Zero, gameBoundaries, PlayerTypes.Human);
+
+            var computerPaddleLocation = new Vector2(gameBoundaries.Width - paddleTexture.Width, 0);
+
+            computerPaddle = new Paddle(paddleTexture, computerPaddleLocation, gameBoundaries, PlayerTypes.Computer);
+
+            ball = new Ball(Content.Load<Texture2D>(ballColors[ballSelector]), Vector2.Zero, gameBoundaries);
+            ball.AttachTo(playerPaddle);
+
+            gameObjects = new GameObjects { PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle, Ball = ball };
+
         }
 
         /// <summary>
@@ -87,12 +127,46 @@ namespace NewPongCity
         /// 
         protected override void Update(GameTime gameTime)
         {
-
-
-            OnClicked();
-
             base.Update(gameTime);
+            switch (_state)
+            {
+                case GameState.one_player:
+                    UpdateOnePlayer(gameTime);
+                    break;
+                case GameState.two_player:
+                    UpdateTwoPlayer(gameTime);
+                    break;
+                default:
+                    UpdateMainMenu(gameTime);
+                    break;
+            }
+            
+           
+            
         }
+        void UpdateMainMenu(GameTime gameTime)
+        {
+                OnClicked();
+            
+        }
+
+        void UpdateOnePlayer(GameTime gameTime)
+        {
+            Console.WriteLine("oneplayer");
+            gameObjects.TouchInput = new TouchInput();
+            GetTouchInput();
+            playerPaddle.Update(gameTime, gameObjects);
+            computerPaddle.Update(gameTime, gameObjects);
+            ball.Update(gameTime, gameObjects);
+        }
+
+        void UpdateTwoPlayer(GameTime gameTime)
+        {
+
+            Console.WriteLine("twoplayer");
+        }
+
+        
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -100,27 +174,66 @@ namespace NewPongCity
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            base.Draw(gameTime);
+            switch (_state)
+            {
+                
+                case GameState.one_player:
+                    DrawOnePlayer(gameTime);
+                    break;
+                case GameState.two_player:
+                    DrawTwoPlayer(gameTime);
+                    break;
+                default:
+                    DrawMainMenu(gameTime);
+                    break;
+            }
+
+        }
+
+     
+
+       void DrawTwoPlayer(GameTime gameTime)
+        {
+            Console.WriteLine("twoplayer");
+          
+        }
+
+        void DrawOnePlayer(GameTime gameTime)
+        {
+            Console.WriteLine("oneplayer");
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, gameBoundaries, Color.White);
+            playerPaddle.Draw(spriteBatch);
+            computerPaddle.Draw(spriteBatch);
+            ball.Draw(spriteBatch);
+            spriteBatch.End();
+           
+        }
+
+        void DrawMainMenu(GameTime gameTime)
+        {
+            _state = GameState.menu;
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             Color tintColor = Color.White;
             Rectangle _logo = new Rectangle(700, 20, 1000, 700);
-            spriteBatch.Draw(logo,_logo, tintColor);
-
+            spriteBatch.Draw(logo, _logo, tintColor);
             _oneplayer = new Rectangle(1000, 700, 450, 100);
             spriteBatch.Draw(one_player, _oneplayer, tintColor);
-
             _two_player = new Rectangle(1000, 850, 450, 100);
             spriteBatch.Draw(two_player, _two_player, tintColor);
             _options = new Rectangle(1000, 1000, 450, 100);
             spriteBatch.Draw(options, _options, tintColor);
-           _exit = new Rectangle(1050, 1150, 350, 100);
+            _exit = new Rectangle(1050, 1150, 350, 100);
             spriteBatch.Draw(exit, _exit, tintColor);
             spriteBatch.End();
 
-            base.Draw(gameTime);
         }
+
+        
 
 
         public void OnClicked()
@@ -130,12 +243,12 @@ namespace NewPongCity
                 var gesture = TouchPanel.ReadGesture();
                 if (gesture.GestureType == GestureType.Tap && _oneplayer.Contains(gesture.Position))
                 {
-                    Console.WriteLine("ok");
+                    _state = GameState.one_player;
 
                 }
                 else if(gesture.GestureType == GestureType.Tap && _two_player.Contains(gesture.Position))
                 {
-
+                    _state = GameState.two_player;
                 }
                 else if (gesture.GestureType == GestureType.Tap && _options.Contains(gesture.Position))
                 {
@@ -145,6 +258,22 @@ namespace NewPongCity
                 {
                     Exit();
                 }
+            }
+        }
+
+        private void GetTouchInput()
+        {
+            while (TouchPanel.IsGestureAvailable)
+            {
+                var gesture = TouchPanel.ReadGesture();
+                if (gesture.Delta.Y > 0)
+                    gameObjects.TouchInput.Down = true;
+
+                if (gesture.Delta.Y < 0)
+                    gameObjects.TouchInput.Up = true;
+
+                if (gesture.GestureType == GestureType.Tap)
+                    gameObjects.TouchInput.Tapped = true;
             }
         }
     }
