@@ -10,11 +10,12 @@ namespace NewPongCity
     {
         Human, 
         Computer,
+        Player2
         //Player2 --Add player2 to enum
     }
     public class Paddle : Sprite
     {
-        private readonly PlayerTypes playerType;
+        public PlayerTypes playerType { get; set; }
 
         private readonly Rectangle screenBounds;
 
@@ -28,13 +29,13 @@ namespace NewPongCity
 
         public override void Update(GameTime gameTime, GameObjects gameObjects)
         {
-            
-            if(playerType == PlayerTypes.Computer)
+
+            if (playerType == PlayerTypes.Computer)
             {
-                if(gameObjects.Ball.Location.Y + gameObjects.Ball.Height < Location.Y)
+                if (gameObjects.Ball.Location.Y + gameObjects.Ball.Height < Location.Y)
                     Velocity = new Vector2(0, -5f);
 
-                if(gameObjects.Ball.Location.Y > Location.Y + Height)
+                if (gameObjects.Ball.Location.Y > Location.Y + Height)
                     Velocity = new Vector2(0, 5f);
             }
 
@@ -47,11 +48,21 @@ namespace NewPongCity
                 if (Keyboard.GetState().IsKeyDown(Keys.Right) || gameObjects.TouchInput.Down)
                     Velocity = new Vector2(0, 5f);
             }
+
+            if (playerType == PlayerTypes.Player2)
+            {
+                Location = new Vector2(Location.X, gameObjects.Position);
+
+            }
             base.Update(gameTime, gameObjects);
         }
         protected override void CheckBounds()
         {
             Location.Y = MathHelper.Clamp(Location.Y, 0, screenBounds.Height - texture.Height);
+        }
+        public float GetYPosition()
+        {
+            return Location.Y;
         }
 
     }

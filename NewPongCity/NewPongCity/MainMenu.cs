@@ -5,6 +5,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System;
+using System.Threading;
+using LiteNetLib;
+using LiteNetLib.Utils;
+using System.Collections.Concurrent;
+using NewPongCity.Shared;
+
 
 namespace NewPongCity
 {
@@ -46,7 +52,15 @@ namespace NewPongCity
         Rectangle _two_player;
         Rectangle _options;
         Rectangle _exit;
-       // private bool pushedStartGameButton = true;
+        // private bool pushedStartGameButton = true;
+
+        //Network players
+        ConcurrentQueue<string> _messageQueue;
+        string _lastMessage;
+        PlayerData[] _otherPlayers;
+        PlayerData _self;
+
+        LiteNetNetworkClient netClient;
 
         public MainMenu()
         {
@@ -57,7 +71,23 @@ namespace NewPongCity
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 480;
             graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+           
+            //Multiplayer
+            _messageQueue = new ConcurrentQueue<string>();
+            _otherPlayers = new PlayerData[2];
+
+            for (int i = 0; i < _otherPlayers.Length; i++)
+            {
+                //init self
+                _otherPlayers[i] = new PlayerData();
+                _otherPlayers[i].Location = new Point(0, 0);
+                _otherPlayers[i].IsPresent = false;
+                _otherPlayers[i].PlayerId = i + 1;
+            }
         }
+
+        public PlayerData GetPlayerData() => _self;
+        public PlayerData[] GetPlayers() => _otherPlayers;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -69,11 +99,43 @@ namespace NewPongCity
         {
             // TODO: Add your initialization logic here
             TouchPanel.EnabledGestures = GestureType.VerticalDrag | GestureType.Flick | GestureType.Tap;
+            
+            //Multiplayer
+            netClient = new LiteNetNetworkClient();
+            netClient.AddLoggingFunc(AddToMessageQueue);
+            netClient.RegisterPlayerHandler(GetPlayerData);
+            netClient.RegisterAllPlayersHandler(GetPlayers);
+            netClient.Start();
+
+            //init self
+            _self = new PlayerData();
+            _self.Location = new Point(20, 20);
+
             base.Initialize();
 
 
         }
 
+        public void AddToMessageQueue(string message)
+        {
+            _messageQueue.Enqueue(message);
+        }
+        public string GetLastMessage()
+        {
+            if (_messageQueue.IsEmpty)
+            {
+                return _lastMessage;
+            }
+
+            string temp;
+            bool success = _messageQueue.TryDequeue(out temp);
+            if (success)
+            {
+                _lastMessage = temp;
+            }
+
+            return _lastMessage;
+        }
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -153,6 +215,7 @@ namespace NewPongCity
         void UpdateOnePlayer(GameTime gameTime)
         {
             Console.WriteLine("oneplayer");
+            computerPaddle.playerType = PlayerTypes.Computer;
             gameObjects.TouchInput = new TouchInput();
             GetTouchInput();
             playerPaddle.Update(gameTime, gameObjects);
@@ -164,9 +227,26 @@ namespace NewPongCity
         {
 
             Console.WriteLine("twoplayer");
+            computerPaddle.playerType = PlayerTypes.Player2;
+            gameObjects.TouchInput = new TouchInput();
+            GetTouchInput();
+            gameObjects.Position = _otherPlayers[1].Location.Y;
+            Console.WriteLine("Holaa " + playerPaddle.GetYPosition());
+            SendClientUpdate((int)playerPaddle.GetYPosition());
+            // TODO: Add your update logic here
+            playerPaddle.Update(gameTime, gameObjects);
+            computerPaddle.Update(gameTime, gameObjects);
+            ball.Update(gameTime, gameObjects);
+            netClient.Update(gameTime, (int)playerPaddle.GetYPosition());
+            base.Update(gameTime);
         }
 
-        
+        private void SendClientUpdate(int playerAction)
+        {
+            //we send actions rather than direct keys because the player could have remapped the keys to whatever they find useful
+            // server only cares about what action the client took.
+            netClient.SendClientActions(playerAction);
+        }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -197,7 +277,14 @@ namespace NewPongCity
        void DrawTwoPlayer(GameTime gameTime)
         {
             Console.WriteLine("twoplayer");
-          
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, gameBoundaries, Color.White);
+            playerPaddle.Draw(spriteBatch);
+            computerPaddle.Draw(spriteBatch);
+            ball.Draw(spriteBatch);
+            spriteBatch.End();
+
         }
 
         void DrawOnePlayer(GameTime gameTime)

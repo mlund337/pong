@@ -18,6 +18,7 @@ namespace NewPongCity
         public Paddle ComputerPaddle { get; set; }
         public TouchInput TouchInput { get; set; }
         public Ball Ball { get; set; }
+        public int Position { get; set; }
     }
 
     public class TouchInput

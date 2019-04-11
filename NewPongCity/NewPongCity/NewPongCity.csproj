@@ -45,6 +45,9 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiteNetLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteNetLib.0.8.3.1\lib\netstandard2.0\LiteNetLib.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
     <Reference Include="OpenTK-1.0" />
@@ -61,6 +64,7 @@
     <Compile Include="Ball.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObjects.cs" />
+    <Compile Include="LiteNetNetworkClient.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Paddle.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
@@ -94,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Drawable\pong_city.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkShared\NetworkShared.csproj">
+      <Project>{ae807174-b8cf-4593-ac25-400b4d6fae42}</Project>
+      <Name>NetworkShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
